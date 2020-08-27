@@ -1,0 +1,228 @@
+/***************************************
+ progran: Creation of geomentric shapes
+ Created By: Guy Ford ID: 301849865
+
+****************************************/
+#include <stdio.h>
+
+
+void main() {
+    int i, j, k = 0, rows, cols, Filling, shape, high, low, space , Flag = 1;
+    char note, YN ;
+    
+    while (Flag == 1)
+    {
+        
+        //Shape selection
+        printf("Please select the desired form:\n1. Rectangle.\n2. Triangle.\n3. Trapezoid.\n4.Exit.\n");
+        scanf_s("%d",&shape);
+        if (shape < 4 && shape > 0)
+        {
+            //Select whether full or empty
+            printf("Please enter if shape full or empty:\n1.full      2.empty\n");
+            scanf_s("%d", &Filling);
+            //Checks with the value of Filling in the correct range
+            if (Filling != 1 && Filling != 2)
+            {
+                shape = 7;
+                printf("invalid option .Please try again\n");
+                continue;
+            }
+            //Select the character
+            printf("Please enter character printing type\n");
+            scanf_s(" %c", &note);
+        }
+        
+
+        switch (shape)
+        {
+            //Rectangle
+        case 1:
+            printf("Please enter number of rows and columns:\n");
+            scanf_s("%d %d", &rows, &cols);
+
+            //full
+           
+            if (Filling == 1)
+            {
+                for (i = 0; i < rows; i++)
+                {
+                    for (j = 0; j < cols; j++)
+                        printf("%c", note);
+                    printf("\n");
+                }
+            }
+            // empty
+            else if (Filling == 2)
+            {
+                for (i = 1; i <= rows; i++)
+                {
+                    for (j = 1; j <= cols; j++)
+                    {
+                        if (i == 1 || i == rows || j == 1 || j == cols)
+                            printf("%c",note);
+                        else
+                            printf(" ");
+                    }
+                    printf("\n");
+                }
+                
+
+            }
+
+
+            printf("Would you like to print another shape? (Write Y or y to (yes) or N to (no))\n");
+            scanf_s(" %c",&YN);
+            
+            break;
+
+
+        case 2:
+            //Triangle
+            printf("Enter the number of rows in pyramid of stars to print\n");
+            scanf_s("%d", &rows);
+            // empty
+            if (Filling == 2)
+            {
+                for (i = 1; i <= rows; i++)
+                {
+                    // Print trailing spaces 
+                    for (j = i; j < rows; j++)
+                    {
+                        printf(" ");
+                    }
+
+                    // Print hollow pyramid 
+                    for (j = 1; j <= (2 * i - 1); j++)
+                    {
+
+                        if (i == rows || j == 1 || j == (2 * i - 1))
+                        {
+                            printf("%c", note);
+                        }
+                        else
+                        {
+                            printf(" ");
+                        }
+                    }
+
+                    // Move to the next line 
+                    printf("\n");
+                }
+
+            }
+           
+            //full
+            else if (Filling == 1)
+            {
+                for (i = 1; i <= rows; ++i, k = 0)
+                {
+                    for (space = 1; space <= rows - i; ++space)
+                    {
+                        printf("  ");
+                    }
+                    while (k != 2 * i - 1)
+                    {
+                        printf("%c ", note);
+                        ++k;
+                    }
+                    printf("\n");
+                }
+
+            }
+
+
+            printf("Would you like to print another shape? (Write Y or y to (yes) or N to (no))\n");
+            scanf_s(" %c",&YN);
+
+            break;
+
+
+            //Trapezoid
+        case 3:
+            printf_s("please enter high and low parameters \n");
+            scanf_s("%d %d", &high, &low);
+            //Checks if the bottom base is larger than the top and if so draws if does not give an error message
+            if (high > low)
+            {
+                printf("The dimensions you entered are not good because the upper value %d is smaller than the lower value %d \ n", high, low);
+            }
+            else
+            {
+                //full
+                if (Filling == 1) {
+                    rows = ((low - high) / 2);
+                    //High loop to define rows
+                    for (i = 0; i <= rows; i++)
+                    {
+                        //loop to define spaces berore trapeze left side
+                        for (j = 0; j <= rows - i; j++)
+                            printf_s(" ");
+                        //Inside loop to define astrica and first and finel rows
+                        for (j = 0; j < (high + 2 * i); j++)
+                            printf_s("%c", note);
+                        printf_s("\n");
+                    }
+                }
+                // empty
+                if (Filling == 2) {
+                    rows = ((low - high) / 2);
+                    //High loop to define rows
+                    for (i = 0; i <= rows; i++)
+                    {
+                        //loop to define spaces berore trapeze left side
+                        for (j = 0; j <= rows - i; j++)
+                            printf_s(" ");
+                        //Check if it first and final row
+                        if (i == 0 || i == rows)
+                        {
+                            //Inside loop to define astrica and first and finel rows
+                            for (j = 0; j < (high + 2 * i); j++)
+                                printf_s("%c", note);
+                        }
+                        else //not first anf final row
+                        {
+                            printf_s("%c", note); //left side astrics
+                            //Loop to define number of spaces inside trapeze
+                            for (j = 0; j < ((high + 2 * i) - 2); j++)
+                                printf_s(" ");
+                            printf_s("%c", note);//Right side astrics
+                        }
+                        printf_s("\n");
+                    }
+
+                }
+
+                printf("Would you like to print another shape? (Write Y or y to (yes) or N to (no))\n");
+                scanf_s(" %c", &YN);
+            }
+            
+
+            break;
+        case 4:
+            Flag = 0;
+            break;
+        default:
+            printf("invalid option .Please try again\n");
+            printf("Would you like to print another shape? (Write Y or y to (yes) or N to (no))\n");
+            scanf_s(" %c", &YN);
+            break;
+        }
+        //Updates the flag of the user's choice
+        if (YN == 'n' || YN == 'N')
+        {
+            Flag = 0;
+        }
+        if (YN != 'n' && YN != 'N' && YN != 'y' && YN != 'Y')
+        {
+            printf("invalid option .Please try again\n");
+        }
+        
+
+
+
+    }
+    
+
+
+}
