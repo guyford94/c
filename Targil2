@@ -1,0 +1,188 @@
+#include<stdio.h>
+#include<math.h>
+
+void main() {
+	int  Flag = 1, op;
+	while (Flag == 1)
+	{
+		printf("please choose: \n1)Calculator\n2)Sum Digits\n3)Grades\n0)quit\n");
+		scanf_s("%d", &op);
+		switch (op) {
+		case 1: {
+			double Num_1, Num_2, Sum, Num_1_c, Num_2_c;
+			int i;
+			char Ex;
+			printf("Enter tow real number\n");
+			scanf_s("%lf%lf", &Num_1, &Num_2);
+			printf("Enter +,-,*,/ %% or ^\n");
+			scanf_s(" %c", &Ex);
+
+			if (Ex == '+')
+			{
+				Sum = Num_1 + Num_2;
+				printf("%.2lf %c %.2lf = %.2lf\n", Num_1, Ex, Num_2, Sum);
+			}
+			if (Ex == '-')
+			{
+				Sum = Num_1 - Num_2;
+				printf("%.2lf %c %.2lf = %.2lf\n", Num_1, Ex, Num_2, Sum);
+			}
+			if (Ex == '*')
+			{
+
+				Sum = Num_1 * Num_2;
+				printf("%.2lf %c %.2lf = %.2lf\n", Num_1, Ex, Num_2, Sum);
+			}
+			if (Ex == '/')
+			{
+				if (Num_2 == 0)
+				{
+					printf("you ceent divaid by zero\n");
+				}
+				else
+				{
+					Sum = Num_1 / Num_2;
+					printf("%.2lf %c %.2lf = %.2lf\n", Num_1, Ex, Num_2, Sum);
+				}
+
+			}
+			if (Ex == '%')
+			{
+				int sum;
+				sum = (int)Num_1 % (int)Num_2;
+				printf("%d %c %d = %d\n", (int)Num_1, Ex, (int)Num_2, (int)sum);
+			}
+
+			if (Ex == '^')
+			{
+				double sum_h;
+				if ((int)Num_1 <= 50 && (int)Num_2 <= 10)
+				{
+				
+					sum_h = pow(Num_1,Num_2);
+					printf("%.2lf %c %.2lf = %.2lf\n",Num_1, Ex,Num_2, sum_h);
+				}
+				else
+				{
+					printf(" in valid number\n");
+				}
+
+			}
+			else
+			{
+				printf("you enter invalid cher\n");
+			}
+		}
+
+
+			  break;
+		case 2:
+		{
+			int Num, maot, asharot, yachidot, sum_of_dig, sum_shalam, sum_sharit;
+
+			printf("Enter 3 digit number\n");
+			scanf_s("%d", &Num);
+			if (Num < 1000 && Num > 99)
+			{
+				yachidot = Num % 10;
+				asharot = Num % 100;
+				maot = Num / 100;
+				sum_of_dig = yachidot + asharot + maot;
+				sum_shalam = Num / sum_of_dig;
+				sum_sharit = Num % sum_of_dig;
+				printf("Sum of D\digits of %d is %d\n %d : %d makes %d | %d\n", Num, sum_of_dig, Num, sum_of_dig, sum_shalam, sum_sharit);
+			}
+			else
+			{
+				printf("You did not enter a 3-digit number\n");
+			}
+			
+		}
+			break;
+
+		case 3:
+		{
+			int Homework_Grade_1, Homework_Grade_2, Homework_Grade_3, Homework_Grade_4, Homework_Grade_5, Sub_test, Test;
+			double Final_grade_homework, Final_grade_tests, Final_grade;
+
+			printf("Please enter the homework score in the format?\n");
+			scanf_s("%d %d %d %d %d", &Homework_Grade_1, &Homework_Grade_2, &Homework_Grade_3, &Homework_Grade_4, &Homework_Grade_5);
+
+			if (Homework_Grade_1 < Homework_Grade_2 && Homework_Grade_1 < Homework_Grade_3 && Homework_Grade_1 < Homework_Grade_4 && Homework_Grade_1 < Homework_Grade_5)
+			{
+				Final_grade_homework = (Homework_Grade_2 + Homework_Grade_3 + Homework_Grade_4 + Homework_Grade_5) / 4;
+			}
+			if (Homework_Grade_2 < Homework_Grade_1 && Homework_Grade_2 < Homework_Grade_3 && Homework_Grade_2 < Homework_Grade_4 && Homework_Grade_2 < Homework_Grade_5)
+			{
+				Final_grade_homework = (Homework_Grade_1 + Homework_Grade_3 + Homework_Grade_4 + Homework_Grade_5) / 4;
+			}
+			if (Homework_Grade_3 < Homework_Grade_1 && Homework_Grade_3 < Homework_Grade_2 && Homework_Grade_3 < Homework_Grade_4 && Homework_Grade_3 < Homework_Grade_5)
+			{
+				Final_grade_homework = (Homework_Grade_1 + Homework_Grade_2 + Homework_Grade_4 + Homework_Grade_5) / 4;
+			}
+			if (Homework_Grade_4 < Homework_Grade_1 && Homework_Grade_4 < Homework_Grade_2 && Homework_Grade_4 < Homework_Grade_3 && Homework_Grade_4 < Homework_Grade_5)
+			{
+				Final_grade_homework = (Homework_Grade_1 + Homework_Grade_3 + Homework_Grade_2 + Homework_Grade_5) / 4;
+			}
+			if (Homework_Grade_5 < Homework_Grade_1 && Homework_Grade_5 < Homework_Grade_3 && Homework_Grade_5 < Homework_Grade_4 && Homework_Grade_5 < Homework_Grade_2)
+			{
+				Final_grade_homework = (Homework_Grade_1 + Homework_Grade_3 + Homework_Grade_4 + Homework_Grade_2) / 4;
+			}
+
+			printf("Please enter a grade of the sub-test, if the student does not approach the sub-test enter -1\n");
+			scanf_s("%d", &Sub_test);
+			printf("Please enter the test grade\n");
+			scanf_s("%d", &Test);
+
+			if (Sub_test == -1)
+			{
+				if (Test < 60)
+				{
+					printf("The student fails the course with a grade: %d\n", Test);
+				}
+				else
+				{
+					Final_grade = (Test * 0.75) + (Final_grade_homework * 0.25);
+					printf("The student passed the course with a grade: %.2lf\n", Final_grade);
+				}
+			}
+			else
+			{
+				if (Test < 60)
+				{
+					printf("The student fails the course with a grade: %d\n", Test);
+				}
+				else
+				{
+					if (Sub_test < 60 || Test > Sub_test)
+					{
+						Final_grade = (Test * 0.75) + (Final_grade_homework * 0.25);
+						printf("The student passed the course with a grade: %ld\n", Final_grade);
+					}
+					else
+					{
+						Final_grade_tests = (Test * 0.8) + (Sub_test * 0.2);
+						Final_grade = (Final_grade_tests * 0.75) + (Final_grade_homework * 0.25);
+						printf("The student passed the course with a grade: %lf\n", Final_grade);
+					}
+				}
+			}
+		}
+		break;
+		case 0:
+			Flag = 0;
+
+			break;
+			{
+		default:
+			printf("you enter invalid number\n");
+			Flag = 0;
+			break;
+			}
+		}
+
+
+
+	}
+
+}
