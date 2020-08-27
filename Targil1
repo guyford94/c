@@ -1,0 +1,37 @@
+#include <stdio.h>
+
+#define attendance_percentage_required 80
+#define passing_grade 60
+
+void main() {
+	double attendance_percentage ,final_test_score , internal_test_score , Homework_Score , Fainel_score , Internal_score;
+	printf("Please enter the student attendance percentage \n");
+	scanf_s("%lf", &attendance_percentage);
+	if (attendance_percentage >= attendance_percentage_required)
+	{
+		printf("Enter the student's final test score \n");
+		scanf_s("%lf", &final_test_score);
+		if (final_test_score >= passing_grade)
+		{
+			printf("Enter the internal test score\n");
+			scanf_s("%lf", &internal_test_score);
+			printf("Enter the Enter the Homework Score\n");
+			scanf_s("%lf", &Homework_Score);
+			Internal_score = (internal_test_score * 0.9) + (Homework_Score * 0.1);
+			Fainel_score = (final_test_score * 0.8) + (Internal_score * 0.2);
+			printf("The student's final grade is:%.2f", Fainel_score);
+		}
+		else
+		{
+			printf("The student fails the course due to a low grade in the final test \ nThe grade in the test is:%.2f", final_test_score);
+		}
+	}
+	else
+	{
+		printf("The student fails the course due to a low participation rate \n ");
+	}
+
+
+
+
+}
