@@ -1,0 +1,128 @@
+#include <stdio.h>
+#define MAX_HOURLY_WADE 200
+#define PAYMENT_PER_KM 1.6
+//Call to program functions
+double Checking_Hours(double Work_start_time, double End_time_of_work, double Total_working_hours);
+double Cheking_Hourly_wage(double Hourly_wage);
+int Final_calculation(double Total_working_hours, double Hourly_wage, double Driving_distance);
+
+void main()
+{
+    //Setting Variables
+    double Work_start_time, End_time_of_work;
+    char Flag = 'y';
+    double Total_working_hours = 0;
+    float Driving_distance, Hourly_wage;
+    //A loop that creates the menu and calls the functions to exit the loop Enter "N" or "n"
+    do
+    {
+
+        printf("Please enter a four-digit work start time:\n");
+        scanf_s("%lf",&Work_start_time);
+        printf("Please enter a four-digit end time of work:\n");
+        scanf_s("%lf",&End_time_of_work);
+        printf("Please enter the hourly wage:\n");
+        scanf_s("%f", &Hourly_wage);
+        printf("Please enter the travel distance in km:\n");
+        scanf_s("%f", &Driving_distance);
+        //Call to a function that checks the entry and exit times
+        Total_working_hours =  Checking_Hours(Work_start_time, End_time_of_work, Total_working_hours);
+        if (Total_working_hours == 0)
+        {
+            continue;
+        }
+        //Call for a function that checks the daily wage
+        Flag = Cheking_Hourly_wage(Hourly_wage);
+        if (Flag == 'e')
+        {
+            Flag = 'y';
+            continue;
+        }
+        //A call to a function that calculates the salary
+        Final_calculation(Total_working_hours, Hourly_wage, Driving_distance);
+
+
+        printf("Do you want to repeat the program? Press 'Y' or 'y' to repeat and 'N' or 'n' to exit the program\n");
+        scanf_s(" %c", &Flag);
+    } while (Flag == 'y' || Flag == 'Y');
+
+}
+//function that checks the entry and exit times
+double Checking_Hours(double Work_start_time, double End_time_of_work, double Total_working_hours) {
+    //Setting Variables
+    int Start_hours = Work_start_time / 100;
+    int Start_minutes = ((int)Work_start_time % 100);
+    int End_hours = End_time_of_work / 100;
+    int End_minutes = ((int)End_time_of_work % 100);
+    //Check that the entry time is within the allowable range
+    if (Start_hours < 0 || Start_hours>24 || Start_minutes < 0 || Start_minutes >60)
+    {
+        printf("Error entering work start time\n");
+        return 0;
+
+    }
+    //Check that the departure time is within the allowable range And returns the total total working hours
+    if (End_hours < 0 || End_hours>24 || End_minutes < 0 || End_minutes >60)
+    {
+        printf("Error entering work End time\n");
+        return 0;
+
+    }
+    //Check that the time of entry before departure
+    if (Start_hours > End_hours)
+    {
+        printf("Error entering entry or exit time\n");
+        return 0;
+    }
+    //Calculation of total working hours
+    Total_working_hours = ((((End_hours * 60) + End_minutes) - ((Start_hours * 60) + Start_minutes)) / 60);
+    //Check if working hours are less than 1
+    if (Total_working_hours < 1)
+    {
+        printf("You will not be paid for the day because you worked less than an hour\n");
+        return 0;
+    }
+    return Total_working_hours;
+}
+//function that checks the daily wage
+double Cheking_Hourly_wage(double Hourly_wage) {
+    if (Hourly_wage > MAX_HOURLY_WADE)
+    {
+        printf("Error entering hourly payment\n");
+        return 'e';
+    }
+}
+//function that calculates the salary And prints the results
+int Final_calculation(double Total_working_hours, double Hourly_wage, double Driving_distance) {
+    //Setting Variables
+    double Overtime = 0, Final_payment = 0, travel_payments=0;
+    double hours, minutes;
+    hours = (Total_working_hours / 1);
+    minutes = ((int)Total_working_hours % 1);
+    //Checking overtime of 125 percent
+    if (Total_working_hours > 8.5 && Total_working_hours < 10.5)
+    {
+        Overtime = ((Total_working_hours - 8.5) * (Hourly_wage * 1.25));
+        Final_payment = (Overtime + (Hourly_wage * 8.5));
+    }
+    //Checking overtime of 150 percent
+    if (Total_working_hours > 10.5 && Total_working_hours < 15)
+    {
+        Overtime = ((Total_working_hours - 10.5) * (Hourly_wage * 1.5)) + (2 * (Hourly_wage * 1.25));
+        Final_payment = (Overtime + (Hourly_wage * 8.5));
+    }
+    //Checking whether the employee is entitled to a travel refund
+    if (Total_working_hours < 8.5)
+    {
+        travel_payments = 0;
+        Final_payment = Total_working_hours * Hourly_wage;
+        printf("There are no travel payments because you worked less than 8.5 hours");
+    }
+    else {
+        travel_payments = (Driving_distance * PAYMENT_PER_KM);
+        printf("Payment for travel distance is: %.2lf\n", (Driving_distance * PAYMENT_PER_KM));
+    }
+    printf("The daily wage: %.2lf\n", (Hourly_wage * 8.5));
+    printf("Wages for overtime : %.2lf\n", Overtime);
+    printf("The final payment for the working day is: %.2lf\n", Final_payment+ travel_payments);
+}
