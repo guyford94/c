@@ -1,0 +1,329 @@
+/*********************************
+
+The program was written by: Guy Ford
+On: 6.12.20
+Exercise number 5 for the C programming language lesson
+
+
+**********************************/
+
+/*********************************
+1.1	
+	A plan for calculating the scope of an engineering form.
+	Input of the program: Number of sides, coordinates of the vertices of the geometric shape - first X and then Y for each coordinate. The coordinates will be absorbed into
+	Matrix of 2 rows: The 0-row is Xs of the points, row 1 - Ys of the points.
+	The program will handle up to six (hexagonal) sides, ie up to 6 columns. Each column represents one vertex in the plane.
+1.2
+	Write a CalcSides function
+	which takes the matrix from section 1.1 and a one-dimensional array called sides.
+	and fills the array at the sides of the shape.
+1.3
+	Write a function called Perim,
+	Which receives the one-dimensional array called sides from section 1.2
+	And calculates the circumference of the shape, which is the sum of the sides
+
+2.0
+	Write function,
+	Which receives an integer, and creates a double-digit number from its largest number and the smallest number in the number.
+	The big digit will be the digit of tens.
+
+3.0
+	Write a function
+	Receiving two int-type pointers
+	And switches between the contents of their cells.
+	Note: The auxiliary variable must not be used for replacement.
+
+4.0
+	Write a function
+	The writer has some even-numbered members in the set, and some odd-numbered parts in the set.
+
+5.0
+	Write a function
+	That turns an array through pointers.
+	***************************************************************************************************/
+
+
+//Library Statement
+#include <stdio.h>
+#include <math.h>
+//Declaration of functions
+int CheckingtheNumberofsides(int x);
+int Insertingcoordinates(int Coordinates[][6], int Number_of_sides);
+int CalcSides(float sides[6], int** Coordinates[][6], int Number_of_sides);
+float distance(int x1, int x2, int y1, int y2);
+int power(int base, int exponent);
+float Perim(float sides[6], int size);
+int integer_to_double_digit_number(int number);
+int Switches_between_cell(int* a, int* b);
+void reverse(int* arr, int size);
+void findSums(int* arr, int size, int* odd_cnt, int* even_cnt);
+
+//Main function
+void main() {
+
+	//Defining variables Question number 1
+	int Number_of_sides = 0, Flag, i, j;
+	int Coordinates[2][6];
+	int size = sizeof(Coordinates) / sizeof(Coordinates[0]);
+	float sides[6];
+	float re;
+	//A loop that repeats the program as long as the user did not ask to exit by entering the digit "0" when asked
+	do
+	{
+		printf("Enter the Number of sides\n");
+		scanf_s("%d", &Number_of_sides);
+		//A call to a function that checks that the number of sides inserted is the correct size
+		Flag = CheckingtheNumberofsides(Number_of_sides);
+		//If the test is negative the function returns "0" and a note will appear to the user
+		if (Flag == 0)
+		{
+			printf("Error entering number of sides, maximum number of sides is 6\n");
+			Flag = 1;
+			continue;
+		}
+		//A call to a function that creates the matrix of the coordinates of X and Y
+		Insertingcoordinates(Coordinates, Number_of_sides);
+		//Printing the two-dimensional matrix of the X and Y coordinates
+		for (i = 0; i < 2; i++)
+		{
+			for (j = 0; j < Number_of_sides; j++)
+			{
+				printf("%d ", Coordinates[i][j]);
+			}
+			printf("\n");
+
+		}
+		//A call to a function that calculates the length of the sides
+		CalcSides(sides, Coordinates, Number_of_sides);
+		//Array printing sides
+		for (i = 0; i < Number_of_sides; i++)
+		{
+			printf("%.2f ", sides[i]);
+
+		}
+		printf("\n");
+		//A call to a function which calculates the polygon circumference and input to the variable re
+		re = Perim(sides, Number_of_sides);
+		//Printing the polygon circumference
+		printf("%.2f\n", re);
+		//Check if the user wants to repeat the program or exit
+		printf("To exit the program, press 0, to repeat the program, press any other character\n");
+		scanf_s("%d", &Flag);
+	} while (Flag != 0);
+
+	//Defining Variables Question 2.0
+	int number;
+	int re_2;
+	printf("Enter a number\n");
+	scanf_s("%d", &number);
+	//A call to a function that creates a 2-digit number that the tens digit is the uppercase digit and the unity digit is the small digit in the number entered by the user
+	re_2 = integer_to_double_digit_number(number);
+	//Print the new number
+	printf("%d \n", re_2);
+
+	//Defining Variables Question 3.0
+	int a = 6, b = 5;
+	//Print the numbers
+	printf("The original numbers: a=%d b=%d \n", a, b);
+	int* p_a = &a;
+	int* p_b = &b;
+	//Call to a function that switches between 2 numbers
+	Switches_between_cell(p_a, p_b);
+	//Print the new numbers
+	printf("after switch: a=%d b=%d \n", a, b);
+
+
+	//Defining Variables Question 4.0
+	i = 0;
+	int arr[] = { 2,3,4,7,2,8,4 };
+	int size_4 = sizeof(arr) / sizeof(arr[0]);
+	//Array printing
+	for ( i = 0; i < size_4; i++)
+	{
+		printf("%d ", arr[i]);
+	}
+	printf("\n");
+	int odd_cnt = 0;
+	int	even_cnt = 0;
+	int* p_odd_cnt = &odd_cnt;
+	int* p_even_cnt = &even_cnt;
+	//A call to a function that checks how many members are even and how many members are odd in the array
+	findSums(arr, size_4, p_odd_cnt, p_even_cnt);
+	//Print the results of the function
+	printf("odd count = %d \neven count = %d\n", odd_cnt, even_cnt);
+
+
+	//Defining Variables Question 5.0
+	int arr5[] = { 1,2,3,4,5,6 };
+	int size_5 = sizeof(arr5) / sizeof(arr5[0]);
+	//Array printing
+	printf("Original array = ");
+	for (i = 0; i < size_5; i++)
+	{
+		printf("%d ", arr5[i]);
+	}
+	printf("\n");
+	//A call to a function that transforms the array
+	reverse(arr5, size_5);
+	//new Array printing
+	printf("New array = ");
+	for (i = 0; i < size_5; i++)
+	{
+		printf("%d ", arr5[i]);
+	}
+}
+//a function that checks that the number of sides inserted is the correct size
+int CheckingtheNumberofsides(int Number_of_sides) {
+	//checks that the number of sides inserted is the correct size If not returns 0
+	if (Number_of_sides > 6 || Number_of_sides < 0 || Number_of_sides == 0) {
+		return 0;
+	}
+
+	return 1;
+}
+//function that creates the matrix of the coordinates of X and Y
+int Insertingcoordinates(int Coordinates[][6], int Number_of_sides) {
+	int i, j;
+	//2 loops with which they create a two-dimensional array
+	for (i = 0; i < 1; i++)
+	{
+		for (j = 0; j < Number_of_sides; j++)
+		{
+			//Reception from the user of the X and Y coordinates
+			printf("Insert coordinate x \n");
+			scanf_s("%d", &Coordinates[0][j]);
+
+			printf("Insert coordinate y \n");
+			scanf_s("%d", &Coordinates[1][j]);
+		}
+
+	}
+
+
+	return 1;
+}
+//function that calculates the length of the sides
+int CalcSides(float sides[6], int** Coordinates[][6], int Number_of_sides) {
+	int i, j, x1, x2, y1, y2, z = 0;
+	//A double loop that passes over a two-dimensional array
+	for (i = 0; i < 1; i++)
+	{
+		for (j = 0; j < (Number_of_sides - 1); j++)
+		{
+			//Definition of X1, X2, Y1 and Y2 and transfer to a function called distance And inserting the result into the one-dimensional array sides
+			x1 = Coordinates[i][j];
+			x2 = Coordinates[i][j + 1];
+			y1 = Coordinates[i + 1][j];
+			y2 = Coordinates[i + 1][j + 1];
+			sides[z] = distance(x1, x2, y1, y2);
+			printf("%.2f ", sides[z]);
+			z++;
+		}
+
+		x1 = Coordinates[i][0];
+		x2 = Coordinates[i][j];
+		y1 = Coordinates[i + 1][0];
+		y2 = Coordinates[i + 1][j];
+		sides[z] = distance(x1, x2, y1, y2);
+		printf("%.2f ", sides[z]);
+		printf("\n");
+	}
+
+
+}
+//A function that checks the length of the side
+float distance(int x1, int x2, int y1, int y2) {
+	float xDiffPower, yDiffPower;
+	float result;
+	xDiffPower = power(x2 - x1, 2);
+	yDiffPower = power(y2 - y1, 2);
+	//A call to a function that performs a power over X and Y
+	result = sqrt(xDiffPower + yDiffPower);
+	return result;
+}
+//function that performs a power over X and Y
+int power(int base, int exponent) {
+	int i, result = 1;
+	for (i = 0; i < exponent; i++)
+		result *= base;
+	return result;
+}
+// function which calculates the polygon circumference
+float Perim(float sides[6], int size) {
+	int i;
+	float sum_Perim = 0;
+	//A loop that passes through a one-dimensional array and connects the lengths of the sides
+	for (i = 0; i < size; i++)
+	{
+		sum_Perim = sum_Perim + sides[i];
+	}
+	//Return of polygon circumference
+	return sum_Perim;
+}
+//function that creates a 2-digit number that the tens digit is the uppercase digit and the unity digit is the small digit in the number entered by the user
+int integer_to_double_digit_number(int number) {
+	int num_temp;
+	int max = 0, min = 9;
+	int new_num;
+	//Check that the number is more than one digit
+	if (number<10)
+	{
+		printf("Enter a single digit number\n");
+		return number;
+	}
+	//A loop that passes over the number entered by the user takes every one digit of the number and checks whether it is the largest or the smallest
+	while (number != 0) {
+		num_temp = number % 10;
+		number = number / 10;
+		if (num_temp > max)
+		{
+			max = num_temp;
+		}
+		if (num_temp < min)
+		{
+			min = num_temp;
+		}
+
+	}
+	//Returns the newly created number
+	return new_num = min + (max * 10);
+}
+//function that switches between 2 numbers
+int Switches_between_cell(int* a, int* b) {
+	*a = *a + *b;
+	*b = *a - *b;
+	*a = *a - *b;
+	
+}
+//function that checks how many members are even and how many members are odd in the array
+void findSums(int* arr, int size, int* odd_cnt, int* even_cnt) {
+	int* p;
+	//Go over the array using a pointer and check if the number is even or odd by using a modulo
+	for (p = arr; p < arr + size; p++)
+	{
+		if (((*p) % 2) == 0)
+		{
+		
+			(*odd_cnt)++;
+		}
+		else
+		{
+			
+			(*even_cnt)++;
+		}
+
+	}
+
+}
+//function that transforms the array
+void reverse(int* arr, int size) {
+	int* p = arr;
+	int* p_e = &arr[size - 1];
+	//Go over the array using a pointer
+	for (p = arr; p < p_e; p++)
+	{
+		//Call to a function that switches between 2 numbers
+		Switches_between_cell(p, p_e);
+		p_e--;
+	}
+}
